@@ -36,7 +36,7 @@ namespace CS_Practice_2.Views
 
         private void BCancel_Click(object sender, RoutedEventArgs e)
         {
-            Environment.Exit(0);
+            
         }
     }
 }

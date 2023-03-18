@@ -1,4 +1,5 @@
 ﻿using CS_Practice_2.Models;
+using CS_Practice_2.Tools;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,8 @@ namespace CS_Practice_2.ViewModels
     internal class DataInputViewModel
     {
         private User _user = new User();
+        private RelayCommand<object> _proceedCommand;
+        private RelayCommand<object> _cancelCommand;
 
         public string Name
         {
@@ -33,6 +36,26 @@ namespace CS_Practice_2.ViewModels
         {
             get { return _user.DateOfBirth; }
             set { _user.DateOfBirth = value; }
+        }
+
+        public RelayCommand<object> ProceedCommand
+        {
+            get { return _proceedCommand ??= new RelayCommand<object>(_ => Proceed(), CanExecute); }
+        }
+
+        public RelayCommand<object> CancelCommand
+        {
+            get { return _cancelCommand ??= new RelayCommand<object>(_ => Environment.Exit(0)); }
+        }
+
+        private void Proceed()
+        {
+
+        }
+
+        private bool CanExecute(object obj)
+        {
+            throw new NotImplementedException();
         }
     }
 }
