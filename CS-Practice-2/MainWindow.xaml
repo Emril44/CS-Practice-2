@@ -7,6 +7,6 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="400" MinWidth="400" MinHeight="450">
     <Grid>
-        <views:DataInputControl></views:DataInputControl>
+        <views:DataInputView></views:DataInputView>
     </Grid>
 </Window>

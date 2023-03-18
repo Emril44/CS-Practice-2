@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace CS_Practice_2.Views
 {
     /// <summary>
-    /// Interaction logic for DataInputControl.xaml
+    /// Interaction logic for DataInputView.xaml
     /// </summary>
-    public partial class DataInputControl : UserControl
+    public partial class DataInputView : UserControl
     {
-        public DataInputControl()
+        public DataInputView()
         {
             InitializeComponent();
         }
