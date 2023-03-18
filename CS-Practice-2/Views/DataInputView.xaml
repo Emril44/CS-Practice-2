@@ -26,6 +26,7 @@
             Grid.Row="0" Grid.Column="0"
             Grid.ColumnSpan="2"
             Caption="Name"
+            Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
             ></tools:CaptionedTextBox>
 
         <tools:CaptionedTextBox
@@ -33,6 +34,7 @@
             Grid.Row="1" Grid.Column="0"
             Grid.ColumnSpan="2"
             Caption="Surname"
+            Text="{Binding Surname, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
             ></tools:CaptionedTextBox>
 
         <tools:CaptionedTextBox
@@ -40,6 +42,7 @@
             Grid.Row="2" Grid.Column="0"
             Grid.ColumnSpan="2"
             Caption="Email"
+            Text="{Binding Email, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
             ></tools:CaptionedTextBox>
         
         <TextBlock
@@ -52,7 +55,8 @@
             Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"
             HorizontalAlignment="Stretch" VerticalAlignment="Center"
             Height="25"
-            Margin="5,0,5,5"/>
+            Margin="5,0,5,5"
+            SelectedDate="{Binding DateOfBirth, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
 
         <Button
             Name="BProceed"

@@ -28,9 +28,11 @@ namespace CS_Practice_2.Tools.Controls
 
         public string Text
         {
-            get { return TbValue.Text; }
-            set { TbValue.Text = value; }
+            get { return (string) GetValue(TextProperty); }
+            set { SetValue(TextProperty, value); }
         }
+
+        public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(string), typeof(CaptionedTextBox), new PropertyMetadata(null));
 
         public CaptionedTextBox()
         {

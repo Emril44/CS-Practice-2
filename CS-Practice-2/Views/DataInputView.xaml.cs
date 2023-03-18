@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CS_Practice_2.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,12 @@ namespace CS_Practice_2.Views
     /// </summary>
     public partial class DataInputView : UserControl
     {
+        private DataInputViewModel _viewModel;
+
         public DataInputView()
         {
             InitializeComponent();
+            DataContext = _viewModel = new DataInputViewModel();
         }
 
         private void BProceed_Click(object sender, RoutedEventArgs e)
