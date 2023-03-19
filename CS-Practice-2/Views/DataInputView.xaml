@@ -5,23 +5,25 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CS_Practice_2.Views"
              xmlns:tools="clr-namespace:CS_Practice_2.Tools.Controls"
+             xmlns:fa="http://schemas.fontawesome.io/icons/"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="400">
+             d:DesignHeight="450" d:DesignWidth="400" IsEnabled="{Binding IsEnabled, Mode=OneWay}">
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="30" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <tools:CaptionedTextBox
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="30" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <tools:CaptionedTextBox
             x:Name="TbName"
             Grid.Row="0" Grid.Column="0"
             Grid.ColumnSpan="2"
@@ -29,7 +31,7 @@
             Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             ></tools:CaptionedTextBox>
 
-        <tools:CaptionedTextBox
+            <tools:CaptionedTextBox
             x:Name="TbSurname"
             Grid.Row="1" Grid.Column="0"
             Grid.ColumnSpan="2"
@@ -37,20 +39,20 @@
             Text="{Binding Surname, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             ></tools:CaptionedTextBox>
 
-        <tools:CaptionedTextBox
+            <tools:CaptionedTextBox
             x:Name="TbEmail"
             Grid.Row="2" Grid.Column="0"
             Grid.ColumnSpan="2"
             Caption="Email"
             Text="{Binding Email, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
             ></tools:CaptionedTextBox>
-        
-        <TextBlock
+
+            <TextBlock
             Grid.Row="3" Grid.Column="0"
             HorizontalAlignment="Left" VerticalAlignment="Center"
             Margin="5,5,5,2"
             Text="Date of birth" FontSize="9" Foreground="Gray"/>
-        <DatePicker
+            <DatePicker
             Name="DPBirthdate"
             Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"
             HorizontalAlignment="Stretch" VerticalAlignment="Center"
@@ -58,7 +60,7 @@
             Margin="5,0,5,5"
             SelectedDate="{Binding DateOfBirth, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
 
-        <Button
+            <Button
             Name="BProceed"
             Grid.Row="5" Grid.Column="0"
             HorizontalAlignment="Stretch" VerticalAlignment="Center"
@@ -67,7 +69,7 @@
             Content="Proceed"
             Command="{Binding ProceedCommand}"/>
 
-        <Button
+            <Button
             Name="BCancel"
             Grid.Row="5" Grid.Column="1"
             HorizontalAlignment="Stretch" VerticalAlignment="Center"
@@ -75,5 +77,7 @@
             Margin="5"
             Content="Cancel"
             Command="{Binding CancelCommand}"/>
+        </Grid>
+        <fa:ImageAwesome Icon="Refresh" Spin="True" Height="50" Width="50" Visibility="{Binding LoaderVisibility, Mode=OneWay}"></fa:ImageAwesome>
     </Grid>
 </UserControl>

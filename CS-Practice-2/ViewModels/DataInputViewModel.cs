@@ -1,6 +1,8 @@
 ﻿using CS_Practice_2.Models;
 using CS_Practice_2.Tools;
 using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -8,7 +10,7 @@ using System.Windows.Controls;
 
 namespace CS_Practice_2.ViewModels
 {
-    internal class DataInputViewModel
+    internal class DataInputViewModel : INotifyPropertyChanged
     {
         private Person _person = new Person();
         private RelayCommand<object> _proceedCommand;
@@ -18,6 +20,9 @@ namespace CS_Practice_2.ViewModels
         private string _sunSign;
         private string _chineseSign;
         private bool _isBirthday;
+
+        private bool _isEnabled = true;
+        private Visibility _loaderVisibility = Visibility.Collapsed;
 
         public string Name
         {
@@ -77,8 +82,30 @@ namespace CS_Practice_2.ViewModels
             get { return _cancelCommand ??= new RelayCommand<object>(_ => Environment.Exit(0)); }
         }
 
+        public bool IsEnabled
+        {
+            get => _isEnabled;
+            set
+            {
+                _isEnabled = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Visibility LoaderVisibility
+        {
+            get => _loaderVisibility;
+            set
+            {
+                _loaderVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
         private async void Proceed()
         {
+            IsEnabled = false;
+            LoaderVisibility = Visibility.Visible;
             _isBirthday = await Task.Run(()=>IsItBirthday());
 
             _isAdult = await Task.Run(()=>(CalculateAge() >= 18));
@@ -87,7 +114,10 @@ namespace CS_Practice_2.ViewModels
 
             _chineseSign = await Task.Run(() => GetChineseSign());
 
-            Console.WriteLine($"{Name} {Surname}, {Email}, {DateOfBirth.ToShortDateString()},\n {SunSign}, {ChineseSign}");
+            IsEnabled = true;
+            LoaderVisibility = Visibility.Collapsed;
+
+            MessageBox.Show($"{Name} {Surname}, {Email}, {DateOfBirth.ToShortDateString()},\n {SunSign}, {ChineseSign}");
         }
 
         private bool IsItBirthday()
@@ -98,6 +128,7 @@ namespace CS_Practice_2.ViewModels
 
         private int CalculateAge()
         {
+            Thread.Sleep(2000);
             var today = DateTime.Today;
 
             int age = (int)((today - DateOfBirth).TotalDays / 365.242199);
@@ -220,6 +251,14 @@ namespace CS_Practice_2.ViewModels
                 !String.IsNullOrWhiteSpace(Surname) &&
                 !String.IsNullOrWhiteSpace(Email) &&
                 !DateOfBirth.Equals(null);
+        }
+
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
