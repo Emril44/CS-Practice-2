@@ -1,6 +1,8 @@
 ﻿using CS_Practice_2.Models;
 using CS_Practice_2.Tools;
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -75,19 +77,17 @@ namespace CS_Practice_2.ViewModels
             get { return _cancelCommand ??= new RelayCommand<object>(_ => Environment.Exit(0)); }
         }
 
-        private void Proceed()
+        private async void Proceed()
         {
-            if (IsItBirthday())
-                MessageBox.Show(":D");
+            _isBirthday = await Task.Run(()=>IsItBirthday());
 
-            _isBirthday = IsItBirthday();
+            _isAdult = await Task.Run(()=>(CalculateAge() >= 18));
 
-            _isAdult = (CalculateAge() >= 18);
+            _sunSign = await Task.Run(() => GetSunSign());
 
-            _sunSign = GetSunSign();
-            _chineseSign = GetChineseSign();
+            _chineseSign = await Task.Run(() => GetChineseSign());
 
-            MessageBox.Show($"{Name} {Surname}, {Email}, {DateOfBirth.ToShortDateString()},\n {SunSign}, {ChineseSign}");
+            Console.WriteLine($"{Name} {Surname}, {Email}, {DateOfBirth.ToShortDateString()},\n {SunSign}, {ChineseSign}");
         }
 
         private bool IsItBirthday()
