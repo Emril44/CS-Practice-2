@@ -2,6 +2,7 @@
 using CS_Practice_2.Tools;
 using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -20,6 +21,7 @@ namespace CS_Practice_2.ViewModels
         private string _sunSign;
         private string _chineseSign;
         private bool _isBirthday;
+        private int _age;
 
         private bool _isEnabled = true;
         private Visibility _loaderVisibility = Visibility.Collapsed;
@@ -72,7 +74,13 @@ namespace CS_Practice_2.ViewModels
             private set { _isBirthday = value; }
         }
 
-        public RelayCommand<object> ProceedCommand
+        public int Age
+        {
+            get { return _age; }
+            set { _age = value; }
+        }
+
+public RelayCommand<object> ProceedCommand
         {
             get { return _proceedCommand ??= new RelayCommand<object>(_ => Proceed(), CanExecute); }
         }
@@ -117,7 +125,16 @@ namespace CS_Practice_2.ViewModels
             IsEnabled = true;
             LoaderVisibility = Visibility.Collapsed;
 
-            MessageBox.Show($"{Name} {Surname}, {Email}, {DateOfBirth.ToShortDateString()},\n {SunSign}, {ChineseSign}");
+            string output = ($"Full name: {Name} {Surname} \n" +
+                $"Email: {Email} \n" +
+                $"Date of birth: {DateOfBirth.ToShortDateString()} \n" +
+                $"Western & Chinese Zodiac: {SunSign}, {ChineseSign}\n" +
+                $"You are {Age} years old");
+
+            if (IsBirthday)
+                output += ("\nHappy birthday! :D");
+
+            MessageBox.Show(output);
         }
 
         private bool IsItBirthday()
@@ -134,7 +151,8 @@ namespace CS_Practice_2.ViewModels
             int age = (int)((today - DateOfBirth).TotalDays / 365.242199);
             if (age > 0 && age < 135)
             {
-                return age;
+                Age = age;
+                return Age;
             }
 
             MessageBox.Show("Invalid age! (Below 0 or above 135)");
