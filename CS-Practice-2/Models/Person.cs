@@ -53,6 +53,22 @@ namespace CS_Practice_2.Models
 
 		public Person(string name, string surname, string email) : this(name, surname, email, null) { }
 		public Person(string name, string surname, DateTime dob) : this(name, surname, null, dob) { }
+    }
 
+	class InvalidPersonEmailException : Exception
+	{
+		public InvalidPersonEmailException(string email) :
+			base(String.Format("Invalid email: {0}", email))
+		{ }
+	}
+
+    class AgeTooOldException : Exception
+    {
+        public AgeTooOldException() { }
+    }
+
+    class DateOfBirthUnreachedException : Exception
+    {
+        public DateOfBirthUnreachedException() { }
     }
 }

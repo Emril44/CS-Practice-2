@@ -1,6 +1,7 @@
 ﻿using CS_Practice_2.Models;
 using CS_Practice_2.Tools;
 using System;
+using System.CodeDom;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -114,13 +115,45 @@ public RelayCommand<object> ProceedCommand
         {
             IsEnabled = false;
             LoaderVisibility = Visibility.Visible;
+
             _isBirthday = await Task.Run(()=>IsItBirthday());
+            
+            try
+            {
+                ValidateEmail(Email);
+            }
+            catch(InvalidPersonEmailException)
+            {
+                MessageBox.Show($"Email invalid! ({Email})");
+                IsEnabled = true;
+                LoaderVisibility = Visibility.Collapsed;
+                return;
+            }
 
-            _isAdult = await Task.Run(()=>(CalculateAge() >= 18));
+            try
+            {
+                CalculateAge();
+            }
+            catch(AgeTooOldException)
+            {
+                MessageBox.Show($"Age {Age} exceeds 150!");
+                IsEnabled = true;
+                LoaderVisibility = Visibility.Collapsed;
+                return;
+            }
+            catch(DateOfBirthUnreachedException)
+            {
+                MessageBox.Show($"Age {Age} below 0!");
+                IsEnabled = true;
+                LoaderVisibility = Visibility.Collapsed;
+                return;
+            }
 
+            _isAdult = await Task.Run(()=>(Age >= 18));
             _sunSign = await Task.Run(() => GetSunSign());
-
             _chineseSign = await Task.Run(() => GetChineseSign());
+
+            
 
             IsEnabled = true;
             LoaderVisibility = Visibility.Collapsed;
@@ -139,24 +172,20 @@ public RelayCommand<object> ProceedCommand
 
         private bool IsItBirthday()
         {
+            Thread.Sleep(2000);
+
             var today = DateTime.Today;
             return (DateOfBirth.Day == today.Day) && (DateOfBirth.Month == today.Month);
         }
 
-        private int CalculateAge()
+        private void CalculateAge()
         {
-            Thread.Sleep(2000);
             var today = DateTime.Today;
 
             int age = (int)((today - DateOfBirth).TotalDays / 365.242199);
-            if (age > 0 && age < 135)
-            {
-                Age = age;
-                return Age;
-            }
-
-            MessageBox.Show("Invalid age! (Below 0 or above 135)");
-            return 0;
+            
+            Age = age;
+            ValidateAge(Age);
         }
 
         private string GetSunSign()
@@ -271,6 +300,41 @@ public RelayCommand<object> ProceedCommand
                 !DateOfBirth.Equals(null);
         }
 
+        private void ValidateAge(int age)
+        {
+            if (age <= 0)
+            {
+                throw new DateOfBirthUnreachedException();
+            }
+
+            else if (age >= 150)
+            {
+                throw new AgeTooOldException();
+            }
+        }
+
+        private void ValidateEmail(string email)
+        {
+            var trimmedEmail = email.Trim();
+
+            if (trimmedEmail.EndsWith("."))
+            {
+                throw new InvalidPersonEmailException(email);
+            }
+            try
+            {
+                var address = new System.Net.Mail.MailAddress(email);
+            }
+            catch (FormatException)
+            {
+                throw new InvalidPersonEmailException(email);
+            }
+
+            //if (address.Address != trimmedEmail)
+            //{
+            //    throw new InvalidPersonEmailException(email);
+            //}
+        }
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
