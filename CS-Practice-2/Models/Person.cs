@@ -5,7 +5,6 @@ namespace CS_Practice_2.Models
     internal class Person
     {
 		#region Fields
-		private Person _person;
         private string _name;
 		private string _surname;
 		private string? _email;
@@ -42,13 +41,10 @@ namespace CS_Practice_2.Models
 
 		public Person(string name, string surname, string? email, DateTime? dob)
 		{
-			_person = new()
-			{
-				_name = name,
-				_surname = surname,
-				_email = email,
-				_dateOfBirth = dob
-			};
+			_name = name;
+			_surname = surname;
+			_email = email;
+			_dateOfBirth = dob;
 		}
 
 		public Person(string name, string surname, string email) : this(name, surname, email, null) { }

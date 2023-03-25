@@ -41,7 +41,7 @@ namespace CS_Practice_2.ViewModels
 
         public string Email
         {
-            get { return _person.Email; }
+            get { return _person.Email ?? ""; }
             set { _person.Email = value; }
         }
 
@@ -120,32 +120,29 @@ public RelayCommand<object> ProceedCommand
             
             try
             {
-                ValidateEmail(Email);
+                await Task.Run(() => ValidateEmail(Email));
             }
             catch(InvalidPersonEmailException)
             {
                 MessageBox.Show($"Email invalid! ({Email})");
-                IsEnabled = true;
-                LoaderVisibility = Visibility.Collapsed;
+                await Task.Run(() => FinishLoad());
                 return;
             }
 
             try
             {
-                CalculateAge();
+                await Task.Run(() => CalculateAge());
             }
             catch(AgeTooOldException)
             {
                 MessageBox.Show($"Age {Age} exceeds 150!");
-                IsEnabled = true;
-                LoaderVisibility = Visibility.Collapsed;
+                await Task.Run(() => FinishLoad());
                 return;
             }
             catch(DateOfBirthUnreachedException)
             {
                 MessageBox.Show($"Age {Age} below 0!");
-                IsEnabled = true;
-                LoaderVisibility = Visibility.Collapsed;
+                await Task.Run(() => FinishLoad());
                 return;
             }
 
@@ -153,21 +150,8 @@ public RelayCommand<object> ProceedCommand
             _sunSign = await Task.Run(() => GetSunSign());
             _chineseSign = await Task.Run(() => GetChineseSign());
 
-            
-
-            IsEnabled = true;
-            LoaderVisibility = Visibility.Collapsed;
-
-            string output = ($"Full name: {Name} {Surname} \n" +
-                $"Email: {Email} \n" +
-                $"Date of birth: {DateOfBirth.ToShortDateString()} \n" +
-                $"Western & Chinese Zodiac: {SunSign}, {ChineseSign}\n" +
-                $"You are {Age} years old");
-
-            if (IsBirthday)
-                output += ("\nHappy birthday! :D");
-
-            MessageBox.Show(output);
+            await Task.Run(() => FinishLoad());
+            await Task.Run(() => OutputPersonData());
         }
 
         private bool IsItBirthday()
@@ -300,7 +284,7 @@ public RelayCommand<object> ProceedCommand
                 !DateOfBirth.Equals(null);
         }
 
-        private void ValidateAge(int age)
+        private static void ValidateAge(int age)
         {
             if (age <= 0)
             {
@@ -313,7 +297,7 @@ public RelayCommand<object> ProceedCommand
             }
         }
 
-        private void ValidateEmail(string email)
+        private static void ValidateEmail(string email)
         {
             var trimmedEmail = email.Trim();
 
@@ -334,6 +318,26 @@ public RelayCommand<object> ProceedCommand
             //{
             //    throw new InvalidPersonEmailException(email);
             //}
+        }
+
+        private void FinishLoad()
+        {
+            IsEnabled = true;
+            LoaderVisibility = Visibility.Collapsed;
+        }
+
+        private void OutputPersonData()
+        {
+            string output = ($"Full name: {Name} {Surname} \n" +
+                $"Email: {Email} \n" +
+                $"Date of birth: {DateOfBirth.ToShortDateString()} \n" +
+                $"Western & Chinese Zodiac: {SunSign}, {ChineseSign}\n" +
+                $"You are {Age} years old");
+
+            if (IsBirthday)
+                output += ("\nHappy birthday! :D");
+
+            MessageBox.Show(output);
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
