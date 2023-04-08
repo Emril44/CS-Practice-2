@@ -62,9 +62,14 @@ namespace CS_Practice_2.ViewModels
             get { return _removePersonCommand ??= new RelayCommand<object>(_ => RemovePerson(), CanEditDeletePerson); }
         }
 
+        public PersonListViewModel()
+        {
+            People = new ObservableCollection<Person>(Enumerable.Range(1, 50).Select(i => Person.GenerateRandomPerson()));
+        }
+
         private void AddPerson()
         {
-
+            
         }
 
         private void EditPerson()
@@ -74,7 +79,7 @@ namespace CS_Practice_2.ViewModels
 
         private void RemovePerson()
         {
-
+            People.Remove(SelectedPerson);
         }
 
         private bool CanEditDeletePerson(object obj)

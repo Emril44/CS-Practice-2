@@ -112,11 +112,11 @@ namespace CS_Practice_2.ViewModels
             IsEnabled = false;
             LoaderVisibility = Visibility.Visible;
 
-            IsBirthday = await Task.Run(()=>IsItBirthday());
+            IsBirthday = await Task.Run(() => _person.IsItBirthday());
             
             try
             {
-                await Task.Run(() => ValidateEmail(Email));
+                await Task.Run(() => Person.ValidateEmail(Email));
             }
             catch(InvalidPersonEmailException)
             {
@@ -127,7 +127,7 @@ namespace CS_Practice_2.ViewModels
 
             try
             {
-                await Task.Run(() => CalculateAge());
+                await Task.Run(() => _person.CalculateAge());
             }
             catch(AgeTooOldException)
             {
@@ -143,132 +143,12 @@ namespace CS_Practice_2.ViewModels
             }
 
             _isAdult = await Task.Run(()=>(Age >= 18));
-            SunSign = await Task.Run(() => GetSunSign());
-            ChineseSign = await Task.Run(() => GetChineseSign());
+
+            SunSign = await Task.Run(() => _person.GetSunSign());
+            ChineseSign = await Task.Run(() => _person.GetChineseSign());
 
             await Task.Run(() => FinishLoad());
             await Task.Run(() => OutputPersonData());
-        }
-
-        private bool IsItBirthday()
-        {
-            Thread.Sleep(2000);
-
-            var today = DateTime.Today;
-            return (DateOfBirth.Day == today.Day) && (DateOfBirth.Month == today.Month);
-        }
-
-        private void CalculateAge()
-        {
-            var today = DateTime.Today;
-
-            int age = (int)((today - DateOfBirth).TotalDays / 365.242199);
-            
-            Age = age;
-            ValidateAge(Age);
-        }
-
-        private string GetSunSign()
-        {
-            int month = DateOfBirth.Month;
-            int day = DateOfBirth.Day;
-            switch (month)
-            {
-                case 1:
-                    if (day <= 19)
-                        return "Capricorn";
-                    else
-                        return "Aquarius";
-
-                case 2:
-                    if (day <= 18)
-                        return "Aquarius";
-                    else
-                        return "Pisces";
-
-                case 3:
-                    if (day <= 20)
-                        return "Pisces";
-                    else
-                        return "Aries";
-
-                case 4:
-                    if (day <= 19)
-                        return "Aries";
-                    else
-                        return "Taurus";
-
-                case 5:
-                    if (day <= 20)
-                        return "Taurus";
-                    else
-                        return "Gemini";
-
-                case 6:
-                    if (day <= 20)
-                        return "Gemini";
-                    else
-                        return "Cancer";
-
-                case 7:
-                    if (day <= 22)
-                        return "Cancer";
-                    else
-                        return "Leo";
-
-                case 8:
-                    if (day <= 22)
-                        return "Leo";
-                    else
-                        return "Virgo";
-
-                case 9:
-                    if (day <= 22)
-                        return "Virgo";
-                    else
-                        return "Libra";
-
-                case 10:
-                    if (day <= 22)
-                        return "Libra";
-                    else
-                        return "Scorpio";
-
-                case 11:
-                    if (day <= 21)
-                        return "Scorpio";
-                    else
-                        return "Sagittarius";
-
-                case 12:
-                    if (day <= 21)
-                        return "Sagittarius";
-                    else
-                        return "Capricorn";
-
-                default:
-                    return "";
-            }
-        }
-
-        private string GetChineseSign()
-        {
-            return (DateOfBirth.Year % 12) switch
-            {
-                0 => "Monkey",
-                1 => "Rooster",
-                2 => "Dog",
-                3 => "Pig",
-                4 => "Rat",
-                5 => "Ox",
-                6 => "Tiger",
-                7 => "Rabbit",
-                8 => "Dragon",
-                9 => "Snake",
-                10 => "Horse",
-                11 => "Goat",
-                _ => "",
-            };
         }
 
         private bool CanExecute(object obj)
@@ -278,42 +158,6 @@ namespace CS_Practice_2.ViewModels
                 !String.IsNullOrWhiteSpace(Surname) &&
                 !String.IsNullOrWhiteSpace(Email) &&
                 !DateOfBirth.Equals(null);
-        }
-
-        private static void ValidateAge(int age)
-        {
-            if (age <= 0)
-            {
-                throw new DateOfBirthUnreachedException();
-            }
-
-            else if (age >= 150)
-            {
-                throw new AgeTooOldException();
-            }
-        }
-
-        private static void ValidateEmail(string email)
-        {
-            var trimmedEmail = email.Trim();
-
-            if (trimmedEmail.EndsWith("."))
-            {
-                throw new InvalidPersonEmailException(email);
-            }
-            try
-            {
-                var address = new System.Net.Mail.MailAddress(email);
-            }
-            catch (FormatException)
-            {
-                throw new InvalidPersonEmailException(email);
-            }
-
-            //if (address.Address != trimmedEmail)
-            //{
-            //    throw new InvalidPersonEmailException(email);
-            //}
         }
 
         private void FinishLoad()
