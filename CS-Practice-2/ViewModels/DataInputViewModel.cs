@@ -162,6 +162,7 @@ namespace CS_Practice_2.ViewModels
 
         private void FinishLoad()
         {
+            Thread.Sleep(1000);
             IsEnabled = true;
             LoaderVisibility = Visibility.Collapsed;
         }

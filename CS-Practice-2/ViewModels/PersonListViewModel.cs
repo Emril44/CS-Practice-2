@@ -16,6 +16,7 @@ namespace CS_Practice_2.ViewModels
     {
         private ObservableCollection<Person> _people;
         private Person _selectedPerson;
+        private Action _goToDataInput;
         private string _filter;
         private ICollectionView _peopleView;
 
@@ -74,7 +75,7 @@ namespace CS_Practice_2.ViewModels
 
         private void EditPerson()
         {
-
+            _goToDataInput.Invoke();
         }
 
         private void RemovePerson()
