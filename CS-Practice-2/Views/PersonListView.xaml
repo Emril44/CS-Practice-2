@@ -5,9 +5,23 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CS_Practice_2.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" MinHeight="450" d:DesignWidth="800" MinWidth="800">
     <Grid>
-        <DataGrid Name="UserList" IsReadOnly="True" AutoGenerateColumns="False">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <DataGrid
+            Name="UserList"
+            IsReadOnly="True"
+            AutoGenerateColumns="False"
+            Height="425" Width="800"
+            Grid.ColumnSpan="3">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
                 <DataGridTextColumn Header="Surname" Binding="{Binding Surname}"/>
@@ -19,5 +33,24 @@
                 <DataGridTextColumn Header="Birthday today" Binding="{Binding IsBirthday}"/>
             </DataGrid.Columns>
         </DataGrid>
+
+        <Button
+            Name="BAdd"
+            Grid.Row="1" Grid.Column="0"
+            Height="25" Width="Auto"
+            Content="Add"
+            ></Button>
+        <Button
+            Name="BEdit"
+            Grid.Row="1" Grid.Column="1"
+            Height="25" Width="Auto"
+            Content="Edit"
+            ></Button>
+        <Button
+            Name="BRemove"
+            Grid.Row="1" Grid.Column="2"
+            Height="25" Width="Auto"
+            Content="Remove"
+            ></Button>
     </Grid>
 </UserControl>
