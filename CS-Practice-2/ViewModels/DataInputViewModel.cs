@@ -14,15 +14,11 @@ namespace CS_Practice_2.ViewModels
 {
     internal class DataInputViewModel : INotifyPropertyChanged
     {
-        private Person _person = new Person();
+        private Person _person = new();
         private RelayCommand<object> _proceedCommand;
         private RelayCommand<object> _cancelCommand;
 
         private bool _isAdult;
-        private string _sunSign;
-        private string _chineseSign;
-        private bool _isBirthday;
-        private int _age;
 
         private bool _isEnabled = true;
         private Visibility _loaderVisibility = Visibility.Collapsed;
@@ -59,29 +55,29 @@ namespace CS_Practice_2.ViewModels
 
         public string SunSign
         {
-            get { return _sunSign; }
-            private set { _sunSign = value; }
+            get { return _person.WestZodiac ?? ""; }
+            private set { _person.WestZodiac = value; }
         }
 
         public string ChineseSign
         {
-            get { return _chineseSign; }
-            private set { _chineseSign = value; }
+            get { return _person.EastZodiac ?? ""; }
+            private set { _person.EastZodiac = value; }
         }
 
         public bool IsBirthday
         {
-            get { return _isBirthday; }
-            private set { _isBirthday = value; }
+            get { return _person.IsBirthday ?? false; }
+            private set { _person.IsBirthday = value; }
         }
 
         public int Age
         {
-            get { return _age; }
-            set { _age = value; }
+            get { return _person.Age ?? -1; }
+            set { _person.Age = value; }
         }
 
-public RelayCommand<object> ProceedCommand
+        public RelayCommand<object> ProceedCommand
         {
             get { return _proceedCommand ??= new RelayCommand<object>(_ => Proceed(), CanExecute); }
         }
@@ -116,7 +112,7 @@ public RelayCommand<object> ProceedCommand
             IsEnabled = false;
             LoaderVisibility = Visibility.Visible;
 
-            _isBirthday = await Task.Run(()=>IsItBirthday());
+            IsBirthday = await Task.Run(()=>IsItBirthday());
             
             try
             {
@@ -147,8 +143,8 @@ public RelayCommand<object> ProceedCommand
             }
 
             _isAdult = await Task.Run(()=>(Age >= 18));
-            _sunSign = await Task.Run(() => GetSunSign());
-            _chineseSign = await Task.Run(() => GetChineseSign());
+            SunSign = await Task.Run(() => GetSunSign());
+            ChineseSign = await Task.Run(() => GetChineseSign());
 
             await Task.Run(() => FinishLoad());
             await Task.Run(() => OutputPersonData());
