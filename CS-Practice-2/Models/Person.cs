@@ -83,7 +83,7 @@ namespace CS_Practice_2.Models
             string name = names[rand.Next(0, names.Length)];
 			string surname = surnames[rand.Next(0, surnames.Length)];
 
-			string? email = "toolazytorandomizethis@gmail.com";
+            string? email = ($"{name.ToLower()}.{surname.ToLower()}@example.com");
 			DateTime? dob = new(rand.Next(1900, 2022), rand.Next(1, 13), rand.Next(1, 29));
 
 			Person newPerson = new()

@@ -18,6 +18,7 @@ namespace CS_Practice_2.ViewModels
         private Person _person = new();
         private RelayCommand<object> _proceedCommand;
         private RelayCommand<object> _cancelCommand;
+        private readonly PersonListViewModel _personList;
 
         private bool _isAdult;
 
@@ -28,6 +29,11 @@ namespace CS_Practice_2.ViewModels
         public DataInputViewModel(Action goToUserList)
         {
             _goToUserList = goToUserList;
+        }
+
+        public DataInputViewModel(PersonListViewModel personList)
+        {
+            _personList = personList;
         }
 
         public string Name
@@ -161,6 +167,8 @@ namespace CS_Practice_2.ViewModels
 
             await Task.Run(() => FinishLoad());
             await Task.Run(() => OutputPersonData());
+
+            CloseEdit();
         }
 
         private bool CanExecute(object obj)

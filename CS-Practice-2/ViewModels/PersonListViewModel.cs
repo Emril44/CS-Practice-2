@@ -18,8 +18,6 @@ namespace CS_Practice_2.ViewModels
         private ObservableCollection<Person> _people;
         private Person _selectedPerson;
         private Action _goToDataInput;
-        private string _filter;
-        private ICollectionView _peopleView;
 
         private RelayCommand<object> _addPersonCommand;
         private RelayCommand<object> _editPersonCommand;
@@ -42,18 +40,6 @@ namespace CS_Practice_2.ViewModels
 			get { return _selectedPerson; }
 			set { _selectedPerson = value; OnPropertyChanged(nameof(SelectedPerson)); }
 		}
-
-        public string Filter
-        {
-            get { return _filter; }
-            set { _filter = value; OnPropertyChanged(nameof(Filter)); }
-        }
-
-        public ICollectionView PeopleView
-        {
-            get { return _peopleView; }
-            set { _peopleView = value; OnPropertyChanged(nameof(PeopleView)); }
-        }
 
         public RelayCommand<object> AddPersonCommand
         {

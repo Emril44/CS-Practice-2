@@ -22,9 +22,10 @@
             AutoGenerateColumns="False"
             Height="425" Width="800"
             Grid.ColumnSpan="3"
-            ItemsSource="{Binding Source=People}">
+            SelectedItem="{Binding SelectedPerson, Mode=TwoWay}"
+            ItemsSource="{Binding People}">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Name" Binding="{Binding Person.Name}"/>
+                <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
                 <DataGridTextColumn Header="Surname" Binding="{Binding Surname}"/>
                 <DataGridTextColumn Header="Date of birth" Binding="{Binding DateOfBirth}"/>
                 <DataGridTextColumn Header="Age" Binding="{Binding Age}"/>
