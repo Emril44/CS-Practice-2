@@ -8,12 +8,9 @@ namespace CS_Practice_2.Views
     /// </summary>
     public partial class DataInputView : UserControl
     {
-        private DataInputViewModel _viewModel;
-
         public DataInputView()
         {
             InitializeComponent();
-            DataContext = _viewModel = new DataInputViewModel();
         }
     }
 }

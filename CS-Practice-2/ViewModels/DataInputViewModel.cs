@@ -1,4 +1,5 @@
 ﻿using CS_Practice_2.Models;
+using CS_Practice_2.Navigation;
 using CS_Practice_2.Tools;
 using System;
 using System.CodeDom;
@@ -12,7 +13,7 @@ using System.Windows.Controls;
 
 namespace CS_Practice_2.ViewModels
 {
-    internal class DataInputViewModel : INotifyPropertyChanged
+    internal class DataInputViewModel : INavigatable
     {
         private Person _person = new();
         private RelayCommand<object> _proceedCommand;
@@ -22,6 +23,12 @@ namespace CS_Practice_2.ViewModels
 
         private bool _isEnabled = true;
         private Visibility _loaderVisibility = Visibility.Collapsed;
+        private Action _goToUserList;
+
+        public DataInputViewModel(Action goToUserList)
+        {
+            _goToUserList = goToUserList;
+        }
 
         public string Name
         {
@@ -84,7 +91,7 @@ namespace CS_Practice_2.ViewModels
 
         public RelayCommand<object> CancelCommand
         {
-            get { return _cancelCommand ??= new RelayCommand<object>(_ => Environment.Exit(0)); }
+            get { return _cancelCommand ??= new RelayCommand<object>(_ => CloseEdit()); }
         }
 
         public bool IsEnabled
@@ -105,6 +112,11 @@ namespace CS_Practice_2.ViewModels
                 _loaderVisibility = value;
                 OnPropertyChanged();
             }
+        }
+
+        public NavigationTypes ViewType
+        {
+            get { return NavigationTypes.DataInput; }
         }
 
         private async void Proceed()
@@ -179,6 +191,11 @@ namespace CS_Practice_2.ViewModels
                 output += ("\nHappy birthday! :D");
 
             MessageBox.Show(output);
+        }
+
+        private void CloseEdit()
+        {
+            _goToUserList.Invoke();
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

@@ -1,4 +1,5 @@
 ﻿using CS_Practice_2.Models;
+using CS_Practice_2.Navigation;
 using CS_Practice_2.Tools;
 using CS_Practice_2.Views;
 using System;
@@ -12,7 +13,7 @@ using System.Windows.Input;
 
 namespace CS_Practice_2.ViewModels
 {
-    internal class PersonListViewModel : INotifyPropertyChanged
+    internal class PersonListViewModel : INavigatable, INotifyPropertyChanged
     {
         private ObservableCollection<Person> _people;
         private Person _selectedPerson;
@@ -23,6 +24,12 @@ namespace CS_Practice_2.ViewModels
         private RelayCommand<object> _addPersonCommand;
         private RelayCommand<object> _editPersonCommand;
         private RelayCommand<object> _removePersonCommand;
+
+        public PersonListViewModel(Action goToInput)
+        {
+            _goToDataInput = goToInput;
+            People = new ObservableCollection<Person>(Enumerable.Range(1, 50).Select(i => Person.GenerateRandomPerson()));
+        }
 
         public ObservableCollection<Person> People
 		{
@@ -63,14 +70,17 @@ namespace CS_Practice_2.ViewModels
             get { return _removePersonCommand ??= new RelayCommand<object>(_ => RemovePerson(), CanEditDeletePerson); }
         }
 
-        public PersonListViewModel()
+        public NavigationTypes ViewType
         {
-            People = new ObservableCollection<Person>(Enumerable.Range(1, 50).Select(i => Person.GenerateRandomPerson()));
+            get
+            {
+                return NavigationTypes.UserList;
+            }
         }
 
         private void AddPerson()
         {
-            
+            _goToDataInput.Invoke();
         }
 
         private void EditPerson()

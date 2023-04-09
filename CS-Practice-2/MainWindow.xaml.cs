@@ -15,6 +15,7 @@ namespace CS_Practice_2
         public MainWindow()
         {
             InitializeComponent();
+            Content = new NavView();
         }
     }
 }

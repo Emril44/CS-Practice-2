@@ -1,9 +1,13 @@
-﻿using System;
+﻿using CS_Practice_2.ViewModels;
+using System;
 
 namespace CS_Practice_2.Navigation
 {
-    internal interface INavigatable<TObject> where TObject : Enum
+    internal interface INavigatable
     {
-        TObject ViewType { get; }
+        NavigationTypes ViewType
+        {
+            get;
+        }
     }
 }

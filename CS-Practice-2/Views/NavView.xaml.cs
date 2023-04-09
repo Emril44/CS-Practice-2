@@ -1,5 +1,4 @@
-﻿using CS_Practice_2.Models;
-using CS_Practice_2.ViewModels;
+﻿using CS_Practice_2.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,13 +17,14 @@ using System.Windows.Shapes;
 namespace CS_Practice_2.Views
 {
     /// <summary>
-    /// Interaction logic for PersonListView.xaml
+    /// Interaction logic for NavView.xaml
     /// </summary>
-    public partial class PersonListView : UserControl
+    public partial class NavView : UserControl
     {
-        public PersonListView()
+        public NavView()
         {
             InitializeComponent();
+            DataContext = new NavViewModel();
         }
     }
 }
